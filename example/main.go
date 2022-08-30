@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	go1inch "github.com/jon4hz/go-1inch"
+	go1inch "github.com/programmare-labs/go-1inch"
 )
 
 func main() {
