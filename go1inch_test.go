@@ -9,7 +9,7 @@ import (
 
 func TestHealthCheckReponse(t *testing.T) {
 	client := go1inch.NewClient()
-	networks := []string{"eth", "bsc", "matic", "optimism", "arbitrum"}
+	networks := []go1inch.Network{go1inch.Eth, go1inch.Bsc, go1inch.Matic, go1inch.Optimism, go1inch.Arbitrum}
 	for _, network := range networks {
 		res, _, err := client.Healthcheck(context.Background(), network)
 		if err != nil {
@@ -79,7 +79,7 @@ func TestSwapWithoutOpts(t *testing.T) {
 	res, _, err := client.Swap(context.Background(), "eth",
 		"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
 		"0x6b175474e89094c44da98b954eedeac495271d0f",
-		"100000000000000000000",
+		"100000000000000",
 		"0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5",
 		1,
 		nil,

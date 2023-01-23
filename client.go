@@ -11,16 +11,36 @@ import (
 )
 
 const (
-	inchURL = "https://api.1inch.exchange/v4.0/"
+	inchURL = "https://api.1inch.io/v5.0/"
+)
+
+type Network string
+
+const (
+	Eth         Network = "eth"
+	Bsc         Network = "bsc"
+	Matic       Network = "matic"
+	Optimism    Network = "optimism"
+	Arbitrum    Network = "arbitrum"
+	GnosisChain Network = "gnosis"
+	Avalanche   Network = "avalanche"
+	Fantom      Network = "fantom"
+	Klaytn      Network = "klaytn"
+	Auror       Network = "auror"
 )
 
 var (
-	network = map[string]string{
-		"eth":      "1",
-		"bsc":      "56",
-		"matic":    "137",
-		"optimism": "10",
-		"arbitrum": "42161",
+	networks = map[Network]string{
+		Eth:         "1",
+		Bsc:         "56",
+		Matic:       "137",
+		Optimism:    "10",
+		Arbitrum:    "42161",
+		GnosisChain: "100",
+		Avalanche:   "43114",
+		Fantom:      "250",
+		Klaytn:      "8217",
+		Auror:       "1313161554",
 	}
 )
 
@@ -44,8 +64,8 @@ func setQueryParam(endpoint *string, params []map[string]interface{}) {
 	}
 }
 
-func (c *Client) doRequest(ctx context.Context, net, endpoint, method string, expRes interface{}, reqData interface{}, opts ...map[string]interface{}) (int, error) {
-	n, ok := network[net]
+func (c *Client) doRequest(ctx context.Context, net Network, endpoint, method string, expRes interface{}, reqData interface{}, opts ...map[string]interface{}) (int, error) {
+	n, ok := networks[net]
 	if !ok {
 		return 0, errors.New("invalid network")
 	}
