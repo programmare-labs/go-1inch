@@ -6,12 +6,13 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
+	"os"
 )
 
 const (
-	inchURL = "https://api.1inch.io/v5.0/"
+	inchURL = "https://api.1inch.dev/v5.2/"
 )
 
 type Network string
@@ -26,7 +27,9 @@ const (
 	Avalanche   Network = "avalanche"
 	Fantom      Network = "fantom"
 	Klaytn      Network = "klaytn"
-	Auror       Network = "auror"
+	Aurora      Network = "aurora"
+	ZkSyncEra   Network = "zksync"
+	Base        Network = "base"
 )
 
 var (
@@ -40,7 +43,9 @@ var (
 		Avalanche:   "43114",
 		Fantom:      "250",
 		Klaytn:      "8217",
-		Auror:       "1313161554",
+		Aurora:      "1313161554",
+		ZkSyncEra:   "324",
+		Base:        "8453",
 	}
 )
 
@@ -89,13 +94,18 @@ func (c *Client) doRequest(ctx context.Context, net Network, endpoint, method st
 		return 0, err
 	}
 
+	req.Header.Add("Content-type", "application/json")
+
+	apiKEY := fmt.Sprintf("Bearer %s", os.Getenv("ONEINCH_API_KEY"))
+	req.Header.Add("Authorization", apiKEY)
+
 	resp, err := c.Http.Do(req)
 	if err != nil {
 		return 0, err
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return 0, err
 	}
